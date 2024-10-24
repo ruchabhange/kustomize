@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-app-prod
+  namespace: argocd
+spec:
+  source:
+    path: overlays/production
+    repoURL: https://github.com/ruchabhange/kustomize.git
+    targetRevision: HEAD
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kustomize
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
+    automated:
+      prune: true
+      selfHeal: true
